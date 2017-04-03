@@ -12,30 +12,34 @@
 			StorageSetter:StorageSetter
 		}
 	})();
-
-	function toggleTheme(target) {
-		var $target =$(target),
+	
+	//主题背景切换函数
+	var toggleTheme = function(theme){
+		var $target =$('.bk-container[data-theme="' + theme + '"]'),
 			$current,
 			$root,
 			currentTheme,
 			nextTheme;
-		if ($target.attr('class').indexOf('bk-button') >= 0) {
-			$current = $('.bk-container-current');
-			$root = $('#root');
-			currentTheme = $current.parent().data('theme');
-			nextTheme = $target.data('theme');
-			$root.attr('class', $root.attr('class').replace(currentTheme, nextTheme));
-			$current.appendTo($target);
-			Util.StorageSetter('theme', nextTheme)
+
+		$current = $('.bk-container-current');
+		$root = $('#root');
+		currentTheme = $current.parent().data('theme');
+		nextTheme = $target.data('theme');
+		$root.attr('class', $root.attr('class').replace(currentTheme, nextTheme));
+		$current.appendTo($target);
+		Util.StorageSetter('theme',nextTheme);
+
+		if($target.is('[data-theme="bg2"]')){
+			$('#light').removeClass('light-night-active');
+		}
+		else if ($target.is('[data-theme="bg5"]')) {
+			$('#light').addClass('light-night-active');
 		}
 	}
 
-	var userTheme = Util.StorageGetter('theme')
-	if (userTheme) {
-		var target = $('.bk-container[data-theme="' + userTheme + '"]')[0]
-		toggleTheme(target)
-	}
-
+	//从缓存中获取主题背景设置
+	var userTheme = Util.StorageGetter('theme');
+	userTheme && toggleTheme(userTheme);
 	
 	var Dom = {
 		top_nav : $("#top-nav"),
@@ -105,9 +109,9 @@
 		$('#light').click(function(){
 			$(this).toggleClass('light-night-active');
 			if($('#light').hasClass('light-night-active')){
-				$('#root').removeClass('m-bg2').addClass('m-bg5');
+				toggleTheme("bg5")
 			}else{
-				$('#root').removeClass('m-bg5').addClass('m-bg2');
+				toggleTheme("bg2")
 			}
 		});
 
@@ -131,11 +135,12 @@
 			Util.StorageSetter('font-size',initFontSize);
 		});
 
-		//切换背景
+		//切换主题背景
 		$('#font-container .child-mod:last-child').on('click', function (e) {
-			toggleTheme(e.target)
+			var theme = $(e.target).data('theme')
+			theme && toggleTheme(theme);
 		})
-		
+
 		//滚动事件
 		Win.scroll(function(){
 			Dom.bottom_nav.hide();
