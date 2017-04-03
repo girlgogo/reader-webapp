@@ -7,21 +7,21 @@ body {
 	text-align: left;
 	width: 100%;
 	overflow: hidden;
-	background-color: #e9dfc7;
 }
 
 /*主体内容部分*/
 
 .m-read-content{
+	/*color: #555;
+	background-color: #e9dfc7;*/
 	font-size: 14px;
-	color: #555;
 	line-height: 31px;
 	padding: 15px; 
 }
 .m-read-content h4{
 	font-size: 20px;
-	color: #736357;
-	border-bottom: solid 1px #736357;
+	/*color: #736357;
+	border-bottom: solid 1px #736357;*/
 	letter-spacing: 2px;
 	margin: 0 0 1em 0;
 }
@@ -30,6 +30,58 @@ body {
 	margin: o.5em 0;
 	letter-spacing: 0px;
 	line-height: 24px;
+}
+
+/*模式选择*/
+
+/*模式1*/
+.m-bg1 .m-read-content {
+	color: #555;
+	background-color: #fff;
+}
+.m-bg1 .m-read-content h4 {
+	color: #736357;
+	border-bottom: solid 1px #736357;
+}
+
+/*模式2，默认模式*/
+.m-bg2 .m-read-content {
+	color: #555;
+	background-color: #e9dfc7;
+}
+.m-bg2 .m-read-content h4 {
+	color: #736357;
+	border-bottom: solid 1px #736357;
+}
+
+/*模式3*/
+.m-bg3 .m-read-content {
+	color: #555;
+	background-color: #adaeb0;
+}
+.m-bg3 .m-read-content h4 {
+	color: #736357;
+	border-bottom: solid 1px #736357;
+}
+
+/*模式4*/
+.m-bg4 .m-read-content {
+	color: #555;
+	background-color: #ddf6d7;
+}
+.m-bg4 .m-read-content h4 {
+	color: #736357;
+	border-bottom: solid 1px #736357;
+}
+
+/*模式5*/
+.m-bg5 .m-read-content {
+	color: #fff;
+	background-color: #323d53;
+}
+.m-bg5 .m-read-content h4 {
+	color: #fff;
+	border-bottom: solid 1px #fff;
 }
 
 /*底部按钮*/

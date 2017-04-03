@@ -33,6 +33,8 @@
 	}
 	RootContainer.css('font-size',initFontSize);
 
+
+
 	function main(){
 		//todo 整个项目的入口函数
 		EventHanlder();
@@ -77,7 +79,12 @@
 
 		//白天夜晚模式切换交互
 		$('#light').click(function(){
-			$(this).toggleClass(`light-night-active`);
+			$(this).toggleClass('light-night-active');
+			if($('#light').hasClass('light-night-active')){
+				$('#root').removeClass('m-bg2').addClass('m-bg5');
+			}else{
+				$('#root').removeClass('m-bg5').addClass('m-bg2');
+			}
 		});
 
 		//调整字体大小交互
@@ -101,25 +108,34 @@
 		});
 
 		//切换背景
-		// $('bk-container').click(function(){
-		// 	if(!bk-container-current)
-		// })
-
 		document.querySelector('#font-container .child-mod:last-child').addEventListener('click', function (e) {
-			var target = e.target;
+			var target = e.target,
+				current,
+				currentTheme,
+				root,
+				nextTheme;
+
 			if (target.className.indexOf('bk-button') >= 0) {
-				var current = this.querySelector('.bk-container-current')
-				target.appendChild(current.parentElement.removeChild(current))
-				console.dir(target.dataset.bg)
-				console.dir(document.body)
-				document.body.style.backgroundColor = '#' + target.dataset.bg
-				if (target.dataset.bg === '323d53') {
-					Array.prototype.forEach.call(document.querySelectorAll('#fiction-container,  #fiction-container h4'), function(item) {
-						item.style.color = '#fff';
-					});
-				}
+				current = this.querySelector('.bk-container-current'),
+				root = document.querySelector('#root');
+				currentTheme = current.parentElement.dataset.theme;
+				nextTheme = target.dataset.theme;
+				root.className = root.className.replace(currentTheme, nextTheme);
+				target.appendChild(current.parentElement.removeChild(current));
+			
+			// 	if (target.dataset.bg === '323d53') {
+			// 		Array
+			// 		.prototype
+			// 		.forEach.call(document.querySelectorAll('#fiction-container,  #fiction-container h4'), function(item) {
+			// 			item.style.color = '#fff';
+			// 		});
+			// 	}else{
+			// 		document.querySelector('#fiction-container').style.color = '#555';
+			// 		document.querySelector('#fiction-container h4').style.color = '#736357';
+			// 	}
 			}
 		})
+		
 		//滚动事件
 		Win.scroll(function(){
 			Dom.bottom_nav.hide();
