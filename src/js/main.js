@@ -13,6 +13,30 @@
 		}
 	})();
 
+	function toggleTheme(target) {
+		var $target =$(target),
+			$current,
+			$root,
+			currentTheme,
+			nextTheme;
+		if ($target.attr('class').indexOf('bk-button') >= 0) {
+			$current = $('.bk-container-current');
+			$root = $('#root');
+			currentTheme = $current.parent().data('theme');
+			nextTheme = $target.data('theme');
+			$root.attr('class', $root.attr('class').replace(currentTheme, nextTheme));
+			$current.appendTo($target);
+			Util.StorageSetter('theme', nextTheme)
+		}
+	}
+
+	var userTheme = Util.StorageGetter('theme')
+	if (userTheme) {
+		var target = $('.bk-container[data-theme="' + userTheme + '"]')[0]
+		toggleTheme(target)
+	}
+
+	
 	var Dom = {
 		top_nav : $("#top-nav"),
 		bottom_nav: $('#bottom-nav'),
@@ -109,19 +133,7 @@
 
 		//切换背景
 		$('#font-container .child-mod:last-child').on('click', function (e) {
-			var $target =$(e.target),
-				$current,
-				$root,
-				currentTheme,
-				nextTheme;
-			if ($target.attr('class').indexOf('bk-button') >= 0) {
-				$current = $('.bk-container-current');
-				$root = $('#root');
-				currentTheme = $current.parent().data('theme');
-				nextTheme = $target.data('theme');
-				$root.attr('class', $root.attr('class').replace(currentTheme, nextTheme));
-				$current.appendTo($target);
-			}
+			toggleTheme(e.target)
 		})
 		
 		//滚动事件
@@ -131,6 +143,7 @@
 			Dom.font_container.hide();
 			Dom.font_button.removeClass('current');
 		});
+
 	}
 	main();
 })();
