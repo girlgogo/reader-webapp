@@ -108,31 +108,19 @@
 		});
 
 		//切换背景
-		document.querySelector('#font-container .child-mod:last-child').addEventListener('click', function (e) {
-			var target = e.target,
-				current,
+		$('#font-container .child-mod:last-child').on('click', function (e) {
+			var $target =$(e.target),
+				$current,
+				$root,
 				currentTheme,
-				root,
 				nextTheme;
-
-			if (target.className.indexOf('bk-button') >= 0) {
-				current = this.querySelector('.bk-container-current'),
-				root = document.querySelector('#root');
-				currentTheme = current.parentElement.dataset.theme;
-				nextTheme = target.dataset.theme;
-				root.className = root.className.replace(currentTheme, nextTheme);
-				target.appendChild(current.parentElement.removeChild(current));
-			
-			// 	if (target.dataset.bg === '323d53') {
-			// 		Array
-			// 		.prototype
-			// 		.forEach.call(document.querySelectorAll('#fiction-container,  #fiction-container h4'), function(item) {
-			// 			item.style.color = '#fff';
-			// 		});
-			// 	}else{
-			// 		document.querySelector('#fiction-container').style.color = '#555';
-			// 		document.querySelector('#fiction-container h4').style.color = '#736357';
-			// 	}
+			if ($target.attr('class').indexOf('bk-button') >= 0) {
+				$current = $('.bk-container-current');
+				$root = $('#root');
+				currentTheme = $current.parent().data('theme');
+				nextTheme = $target.data('theme');
+				$root.attr('class', $root.attr('class').replace(currentTheme, nextTheme));
+				$current.appendTo($target);
 			}
 		})
 		
