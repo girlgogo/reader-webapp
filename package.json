@@ -1,0 +1,33 @@
+{
+  "name": "reader-webapp",
+  "version": "1.0.0",
+  "description": "学习一个实战课程的课后作业--用web技术实现的移动端扽不算太复杂的阅读器。",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/girlgogo/reader-webapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/girlgogo/reader-webapp/issues"
+  },
+  "homepage": "https://github.com/girlgogo/reader-webapp#readme",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "webpack": "^2.3.3"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.0",
+    "html-webpack-plugin": "^2.28.0",
+    "style-loader": "^0.16.1"
+  }
+}

@@ -1,3 +1,9 @@
+import $ from 'jquery'
+import './jquery.base64.js'
+import './jquery.jsonp.js'
+import '../css/reset.css'
+import '../css/reader.css'
+
 (function(){
 	var Util = (function(){
 		var prefix = 'html5_reader_';
@@ -7,7 +13,20 @@
 		var StorageSetter = function(key,val){
 			return localStorage.setItem(prefix + key,val);
 		}
+		var getBSONP = function(url,callback){
+			return $.jsonp({
+				url : url,
+				cache:true,
+				callback:'duokan_fiction_chapter',
+				success : function(result){
+					var data = $.base64.decode(result);
+					var jsonp = decodeURIComponent(escape(data));
+					callback(data);
+				}
+			})
+		}
 		return {
+			getBSONP,getBSONP,
 			StorageGetter:StorageGetter,
 			StorageSetter:StorageSetter
 		}
@@ -65,11 +84,43 @@
 
 	function main(){
 		//todo 整个项目的入口函数
+		var readerModel = ReaderModel();
+		readerModel.init();
 		EventHanlder();
 	}
 
 	function ReaderModel (){
 		//todo 实现和阅读器相关的数据交互的方法
+		//第一步，获得章节列表信息
+		var Chapter_id;
+		var init = function(){
+			getFictionInfo(function(){
+				getCurChapterContent(Chapter_id,function(){
+					//todo...
+				})
+			})
+		}
+		var getFictionInfo = function(callback){
+			$.get('mock/chapter.json', function(data){
+				//todo 获得章节信息之后的回调
+				Chapter_id = data.chapters[1].chapter_id;
+				callback && callback()
+			},'json');
+		}
+		var getCurChapterContent = function(chapter_id,callback){
+			$.get('mock/data' + chapter_id + '.json',function(data) {
+				if(data.result == 0){
+					var url = data.jsonp;
+					//获得加密的json数据
+					Util.getBSONP(url,function(data){
+						callback && callback(data);
+					});
+				}
+			},'json');
+		}
+		return {
+			init : init
+		}
 	}
 
 	function ReaderBaseFrame(){
@@ -81,11 +132,9 @@
 		
 		//中间唤醒操作区
 		$('#action_mid').click(function(){
-			// console.log('bjfbe'); 
 			if(Dom.top_nav.css('display') == 'none'){
 				Dom.bottom_nav.show();
 				Dom.top_nav.show();
-				// console.log('hjsdb');
 			}else{
 				Dom.bottom_nav.hide();
 				Dom.top_nav.hide();
@@ -138,6 +187,9 @@
 		//切换主题背景
 		$('#font-container .child-mod:last-child').on('click', function (e) {
 			var theme = $(e.target).data('theme')
+			// var theme = $(e.target).attr('data-theme')
+			// var theme = e.target.dataset.theme
+			// var theme = e.target.getAttribute('data-theme')
 			theme && toggleTheme(theme);
 		})
 
