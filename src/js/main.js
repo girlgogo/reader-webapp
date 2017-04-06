@@ -20,8 +20,8 @@ import '../css/reader.css'
 				callback:'duokan_fiction_chapter',
 				success : function(result){
 					var data = $.base64.decode(result);
-					var jsonp = decodeURIComponent(escape(data));
-					callback(data);
+					var json = decodeURIComponent(escape(data));
+					callback(json);
 				}
 			})
 		}
@@ -32,7 +32,7 @@ import '../css/reader.css'
 		}
 	})();
 	
-	//主题背景切换函数
+	// 主题背景切换函数
 	var toggleTheme = function(theme){
 		var $target =$('.bk-container[data-theme="' + theme + '"]'),
 			$current,
@@ -56,7 +56,7 @@ import '../css/reader.css'
 		}
 	}
 
-	//从缓存中获取主题背景设置
+	// 从缓存中获取主题背景设置
 	var userTheme = Util.StorageGetter('theme');
 	userTheme && toggleTheme(userTheme);
 	
@@ -72,6 +72,8 @@ import '../css/reader.css'
 	}
 	var Win = $(window);
 	var Doc = $(document);
+	var readerModel;
+	var readerUI;
 	var RootContainer = $('#fiction-container');
 	var initFontSize = Util.StorageGetter('font-size');
 	initFontSize = parseInt(initFontSize);
@@ -83,27 +85,33 @@ import '../css/reader.css'
 
 
 	function main(){
-		//todo 整个项目的入口函数
-		var readerModel = ReaderModel();
-		readerModel.init();
+		// todo 整个项目的入口函数
+		readerModel = ReaderModel();
+		readerUI = ReaderBaseFrame(RootContainer);
+		readerModel.init(function(data){
+			readerUI(data);
+		});
 		EventHanlder();
 	}
 
 	function ReaderModel (){
-		//todo 实现和阅读器相关的数据交互的方法
-		//第一步，获得章节列表信息
+		// todo 实现和阅读器相关的数据交互的方法
+		// 第一步，获得章节列表信息
 		var Chapter_id;
-		var init = function(){
+		var ChapterTotal;
+		var init = function(UIcallback){
 			getFictionInfo(function(){
-				getCurChapterContent(Chapter_id,function(){
-					//todo...
+				getCurChapterContent(Chapter_id,function(data){
+					// todo...
+					UIcallback && UIcallback(data)
 				})
 			})
 		}
 		var getFictionInfo = function(callback){
 			$.get('mock/chapter.json', function(data){
-				//todo 获得章节信息之后的回调
+				// todo 获得章节信息之后的回调
 				Chapter_id = data.chapters[1].chapter_id;
+				ChapterTotal = data.chapters.length;
 				callback && callback()
 			},'json');
 		}
@@ -111,26 +119,55 @@ import '../css/reader.css'
 			$.get('mock/data' + chapter_id + '.json',function(data) {
 				if(data.result == 0){
 					var url = data.jsonp;
-					//获得加密的json数据
+					// 获得加密的json数据
 					Util.getBSONP(url,function(data){
 						callback && callback(data);
 					});
 				}
 			},'json');
 		}
+		var prevChapter = function(UIcallback){
+			Chapter_id = parseInt(Chapter_id,10);
+			if(Chapter_id == 0){
+				return;
+			}
+			Chapter_id -= 1;
+			getCurChapterContent(Chapter_id,UIcallback);
+		}
+		var nextChapter = function(UIcallback){
+			Chapter_id = parseInt(Chapter_id,10);
+			if(Chapter_id == ChapterTotal){
+				return;
+			}
+			Chapter_id += 1;
+			getCurChapterContent(Chapter_id,UIcallback);
+		}
 		return {
-			init : init
+			init : init,
+			prevChapter: prevChapter,
+			nextChapter: nextChapter
 		}
 	}
 
-	function ReaderBaseFrame(){
-		//todo 渲染基本的UI结构
+	function ReaderBaseFrame(container){
+		// todo 渲染基本的UI结构
+		function parseChapterData(jsonData){
+			var jsonObj = JSON.parse(jsonData);
+			var html = '<h4>' + jsonObj.t + '</h4>';
+			for(var i=0;i<jsonObj.p.length;i++){
+				html += "<p>" + jsonObj.p[i] + "</p>";
+			}
+			return html;
+		}
+		return function(data){
+			container.html(parseChapterData(data));
+		}
 	}
 
 	function EventHanlder(){
-		//todo 交互的事件绑定
+		// todo 交互的事件绑定
 		
-		//中间唤醒操作区
+		// 中间唤醒操作区
 		$('#action_mid').click(function(){
 			if(Dom.top_nav.css('display') == 'none'){
 				Dom.bottom_nav.show();
@@ -143,7 +180,7 @@ import '../css/reader.css'
 			}
 		});
 
-		//字体按钮点击事件
+		// 字体按钮点击事件
 		Dom.font_button.click(function(){
 			if(Dom.font_container.css('display') == 'none'){
 				Dom.font_container.show();
@@ -154,7 +191,7 @@ import '../css/reader.css'
 			}
 		});
 
-		//白天夜晚模式切换交互
+		// 白天夜晚模式切换交互
 		$('#light').click(function(){
 			$(this).toggleClass('light-night-active');
 			if($('#light').hasClass('light-night-active')){
@@ -164,7 +201,7 @@ import '../css/reader.css'
 			}
 		});
 
-		//调整字体大小交互
+		// 调整字体大小交互
 		$('#large-font').click(function(){
 			if(initFontSize > 20){
 				return;
@@ -184,16 +221,16 @@ import '../css/reader.css'
 			Util.StorageSetter('font-size',initFontSize);
 		});
 
-		//切换主题背景
+		// 切换主题背景
 		$('#font-container .child-mod:last-child').on('click', function (e) {
 			var theme = $(e.target).data('theme')
-			// var theme = $(e.target).attr('data-theme')
-			// var theme = e.target.dataset.theme
-			// var theme = e.target.getAttribute('data-theme')
+			//  var theme = $(e.target).attr('data-theme')
+			//  var theme = e.target.dataset.theme
+			//  var theme = e.target.getAttribute('data-theme')
 			theme && toggleTheme(theme);
 		})
 
-		//滚动事件
+		// 滚动事件
 		Win.scroll(function(){
 			Dom.bottom_nav.hide();
 			Dom.top_nav.hide();
@@ -201,6 +238,19 @@ import '../css/reader.css'
 			Dom.font_button.removeClass('current');
 		});
 
+		//上下翻页
+		
+		$('#prev-button').on('click',function(){
+			//todo 获得章节的翻页数据->把数据拿出来渲染
+			readerModel.prevChapter(function(data){
+				readerUI(data);
+			});
+		});
+		$('#next-button').on('click',function(){
+			readerModel.nextChapter(function(data){
+				readerUI(data);
+			});
+		});
 	}
 	main();
 })();
