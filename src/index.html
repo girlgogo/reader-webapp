@@ -1,75 +1,73 @@
 <!DOCTYPE html>
 <html ng-app="app">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
-		<meta name="format-detection" content="telephone=no">
-	</head>
-	<body>
-		<div id="root" class="container m-bg2">
-           
-           <div class="m-article-action"> 
-               <div class="article-action-mid" id="action_mid"></div>
-           </div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+    <meta name="format-detection" content="telephone=no">
+  </head>
+  <body>
+    <div id="root" class="container m-bg2">
+       
+       <div class="m-article-action"> 
+         <div class="article-action-mid" id="action_mid"></div>
+       </div>
 
-            <div id="top-nav" class="top-nav" style="display: none">
-                <div class="icon-back"></div>
-                <div class="nav-title">返回书架</div>
+      <div id="top-nav" class="top-nav" style="display: none">
+        <div class="icon-back"></div>
+        <div class="nav-title">返回书架</div>
+      </div>
+       
+      <div id="fiction-chapter-title"></div>
+      
+      <div id="fiction-container" class="m-read-content"></div>
+      
+      <div class="m-button-bar">
+        <ul class="u-tab">
+          <li id="prev-button">上一章</li>
+          <li id="next-button">下一章</li>
+        </ul>
+      </div>
+      
+      <div id="bottom-nav" class="bottom-nav" style="display: none">
+        <div id="nav-content" class="nav-content">
+          <div id="catalog" class="catalog">
+            <div class="bg-icon-catalog bg-icon"></div>
+            <div class="btn-title">目录</div>
+          </div>
+          <div id="font-button" class="font">
+            <div class="bg-icon-font bg-icon"></div>
+            <div class="btn-title">字体</div>
+          </div>
+          <div id="light" class="light">
+            <div id="day-button" class="day">
+              <div class="bg-icon-day bg-icon"></div>
+              <div class="btn-title">白天</div>
             </div>
-           
-            <div id="fiction-chapter-title"></div>
-          
-            <div id="fiction-container" class="m-read-content">
-               
+            <div id="night-button" class="night">
+               <div class="bg-icon-night bg-icon"></div>
+              <div class="btn-title">夜间</div>
             </div>
-            
-            <div class="m-button-bar">
-                <ul class="u-tab">
-                    <li id="prev-button">上一章</li>
-                    <li id="next-button">下一章</li>
-                </ul>
-            </div>
-            
-            <div id="bottom-nav" class="bottom-nav" style="display: none">
-                <div id="nav-content" class="nav-content">
-                    <div id="catalog" class="catalog">
-                        <div class="bg-icon-catalog bg-icon"></div>
-                        <div class="btn-title">目录</div>
-                    </div>
-                    <div id="font-button" class="font">
-                        <div class="bg-icon-font bg-icon"></div>
-                        <div class="btn-title">字体</div>
-                    </div>
-                    <div id="light" class="light">
-                        <div id="day-button" class="day">
-                            <div class="bg-icon-day bg-icon"></div>
-                            <div class="btn-title">白天</div>
-                        </div>
-                        <div id="night-button" class="night">
-                             <div class="bg-icon-night bg-icon"></div>
-                            <div class="btn-title">夜间</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-pannel" id="font-container" style="display: none">
-                <div class="child-mod">
-                    <span>字号</span>
-                    <button id="large-font" class="font-size-button">大</button>
-                    <button id="small-font" class="font-size-button">小</button>
-                </div>
-                <div class="child-mod">
-                    <span>背景</span>
-                    <div class="bk-container bk-button1" data-theme="bg1"></div>
-                    <div class="bk-container bk-button2" data-theme="bg2">
-                        <div class="bk-container-current"></div>
-                    </div>
-                    <div class="bk-container bk-button3" data-theme="bg3"></div>
-                    <div class="bk-container bk-button4" data-theme="bg4"></div>
-                    <div class="bk-container bk-button5" data-theme="bg5"></div>
-                </div>
-            </div>
+          </div>
         </div>
-	</body>
+      </div>
+
+      <div class="nav-pannel" id="font-container" style="display: none">
+        <div class="child-mod">
+          <span>字号</span>
+          <button id="large-font" class="font-size-button">大</button>
+          <button id="small-font" class="font-size-button">小</button>
+        </div>
+        <div class="child-mod">
+          <span>背景</span>
+          <div class="bk-container bk-button1" data-theme="bg1"></div>
+          <div class="bk-container bk-button2" data-theme="bg2">
+            <div class="bk-container-current"></div>
+          </div>
+          <div class="bk-container bk-button3" data-theme="bg3"></div>
+          <div class="bk-container bk-button4" data-theme="bg4"></div>
+          <div class="bk-container bk-button5" data-theme="bg5"></div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
