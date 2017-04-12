@@ -108,17 +108,17 @@ import '../css/reader.css'
           UIcallback && UIcallback(data)
         })
     }
-    var getFictionInfo = function (callback) {
-      $.get('mock/chapter.json', function (data) {
-        // todo 获得章节信息之后的回调
-        chapterId = Util.StorageGetter('curChapterId')
-        if (chapterId == null) {
-          chapterId = data.chapters[1].chapter_id
-        }
-        chapterTotal = data.chapters.length
-        callback && callback()
-      }, 'json')
-    }
+    // var getFictionInfo = function (callback) {
+    //   $.get('mock/chapter.json', function (data) {
+    //     // todo 获得章节信息之后的回调
+    //     chapterId = Util.StorageGetter('curChapterId')
+    //     if (chapterId == null) {
+    //       chapterId = data.chapters[1].chapter_id
+    //     }
+    //     chapterTotal = data.chapters.length
+    //     callback && callback()
+    //   }, 'json')
+    // }
     var getFictionInfoPromise = function () {
       return new Promise(function(resolve,reject){
         $.get('mock/chapter.json', function (data) {
@@ -136,17 +136,17 @@ import '../css/reader.css'
         }, 'json')
       })
     }
-    var getCurChapterContent = function (chapterId, callback) {
-      $.get('mock/data' + chapterId + '.json', function (data) {
-        if (data.result === 0) {
-          var url = data.jsonp
-          // 获得加密的json数据
-          Util.getBSONP(url, function (data) {
-            callback && callback(data)
-          })
-        }
-      }, 'json')
-    }
+    // var getCurChapterContent = function (chapterId, callback) {
+    //   $.get('mock/data' + chapterId + '.json', function (data) {
+    //     if (data.result === 0) {
+    //       var url = data.jsonp
+    //       // 获得加密的json数据
+    //       Util.getBSONP(url, function (data) {
+    //         callback && callback(data)
+    //       })
+    //     }
+    //   }, 'json')
+    // }
     var getCurChapterContentPromise = function () {
       return new Promise(function(resolve,reject){
         $.get('mock/data' + chapterId + '.json', function (data) {
