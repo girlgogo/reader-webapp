@@ -169,7 +169,7 @@ import '../css/reader.css'
       }
       chapterId -= 1
       Util.StorageSetter('curChapterId',chapterId)
-      getCurChapterContent(chapterId, UIcallback)
+      getCurChapterContentPromise().then(UIcallback)
     }
     var nextChapter = function (UIcallback) {
       chapterId = parseInt(chapterId, 10)
@@ -178,7 +178,7 @@ import '../css/reader.css'
       }
       chapterId += 1
       Util.StorageSetter('curChapterId',chapterId)
-      getCurChapterContent(chapterId, UIcallback)
+      getCurChapterContentPromise().then(UIcallback)
     }
     return {
       init: init,
@@ -278,14 +278,10 @@ import '../css/reader.css'
     // 上下翻页
     $('#prev-button').on('click', function () {
       // todo 获得章节的翻页数据->把数据拿出来渲染
-      readerModel.prevChapter(function (data) {
-        readerUI(data)
-      })
+      readerModel.prevChapter(readerUI)
     })
     $('#next-button').on('click', function () {
-      readerModel.nextChapter(function (data) {
-        readerUI(data)
-      })
+      readerModel.nextChapter(readerUI)
     })
   }
   main()
